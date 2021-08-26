@@ -7,25 +7,6 @@
 # valor das posições subsequentes. Faz a troca entre os dois valores, 
 # se necessário. Continua o processo , até isolar o penúltimo elemento da lista.
 
-# exemplo em c++
-#void selection_sort(int v[],int tam){
-#int i_menor=0;
-#int aux=0;
-#    for(int i=0;i<tam-1;i++){
-#        i_menor=i+1;
-#        for( int j=i_menor;j<tam;j++){
-#            if(v[j]<v[i_menor]){
-#                i_menor=j;
-#            }
-#        }
-#        if(v[i_menor]<v[i]){
-#            aux=v[i_menor];
-#            v[i_menor]=v[i];
-#            v[i]=aux;
-#        }
-#    }
-#}
-
 from time import time
 from data.nomes_desord import nomes
 comps = 0 # número de comparações
