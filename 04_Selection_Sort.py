@@ -9,6 +9,8 @@
 
 from time import time
 from data.nomes_desord import nomes
+import tracemalloc
+
 comps = 0 # número de comparações
 passadas = 0 # número de passadas
 trocas = 0 # número de trocas
@@ -49,7 +51,12 @@ print (nums)
 lista_parc = nomes[:30000]
 
 t_ini = time()
+tracemalloc.start()
+
 selection_sort(nomes)
+
+mem_atual,mem_pico = tracemalloc.get_traced_memory()
+
 t_fim = time()
 
 print(nums)
@@ -58,4 +65,5 @@ print(f"Tempo de processamento: {(t_fim-t_ini)} s")
 print(f"Número de Trocas: {trocas}")
 print(f"Número de Comparações: {comps}")
 print(f"Número de passadas: {passadas}")
-    
+print(f"Pico de memória: {mem_pico / 1024 / 1024}MB")    
+tracemalloc.stop() # finaliza medição do consumo de memória
