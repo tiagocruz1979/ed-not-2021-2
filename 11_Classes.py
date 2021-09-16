@@ -6,6 +6,8 @@
 # ingredientes (dados) e modos de fazer (algoritmos), mas
 # terão sempre o formato determinado pela "fôrma" (classe).
 
+from math import pi
+
 class FormaGeometrica():
     # Dados
     #Quando pertencem a uma classe , ganham o nome de Atributos
@@ -23,16 +25,21 @@ class FormaGeometrica():
         # recebe os valores passados ao construtor e os armazena dentro 
         # dos atributos
 
-        if type(base) not in [int,float] or base <= 0:
-            raise Exception("A base deve ser numérica e maior do que 0")
-        elif type(altura) not in [int,float] or altura <= 0:
-            raise Exception("A altura deve ser numérica e maior do que zero")
-        elif tipo not in["R","T","E"]:
-            raise Exception("O Tipo deve ser R, T ou E.")
         
-        self.__base = base  # colocamos __ para indicar que o atributo é privado
-        self.__altura = altura
-        self.__tipo = tipo
+        ### o Código abaixo foi mantido como anotação de aula , mas foi substitído pela setters
+        # if type(base) not in [int,float] or base <= 0:
+        #     raise Exception("A base deve ser numérica e maior do que 0")
+        # elif type(altura) not in [int,float] or altura <= 0:
+        #     raise Exception("A altura deve ser numérica e maior do que zero")
+        # elif tipo not in["R","T","E"]:
+        #     raise Exception("O Tipo deve ser R, T ou E.")
+        
+        #self.base = base  # colocamos __ para indicar que o atributo é privado
+        
+        # Ajustando o valor inicial via setters das propriedades
+        self.base = base
+        self.altura = altura
+        self.tipo = tipo
 
     #getter é um método que possibilida sabero valor de um atributo
     # privado do lado de fora da classe
@@ -61,15 +68,43 @@ class FormaGeometrica():
     @altura.setter
     def altura(self,valor): #setter para a propriedade chamada "altura"
         if type(valor) not in[int,float] or valor <= 0:
-            raise Exception("A altura deve ser numérica e maior que zero")
+            raise Exception("* A altura deve ser numérica e maior que zero")
         
         self.__altura = valor
+
+    @property
+    def tipo(self):
+        return self.__tipo
+    
+    @tipo.setter
+    def tipo(self,valor):
+        if valor not in["R","T","E"]:
+            raise Exception("* O Tipo deve ser R, T ou E.")
+        self.__tipo = valor
+
+
+    # Um método é uma função que , inserido dentro de uma classe, 
+    #pode acessar seus dados(atributos) e mamanipulá-los.
+    def calc_area(self):
+        if self.tipo=="R":
+            return self.base * self.altura
+        elif self.tipo == "T":
+            return (self.base * self.altura)/2
+        else: # Elipse , tipo "E"
+            return (self.base /2) * (self.altura/2) * pi
 
 #######################################################################
 
 #criando objetos (instanciando) a partir da classe
 retangulo1 = FormaGeometrica(15.5,10,"R")  # chama o __init__
 triangulo1 = FormaGeometrica(6,9,"T")
+elipse1 = FormaGeometrica(3,4.5,"E")
+
+print(f"Área de uma forma {retangulo1.tipo} de {retangulo1.base}X{retangulo1.altura} : {retangulo1.calc_area()}")
+
+print(f"Área de uma forma {triangulo1.tipo} de {triangulo1.base}X{triangulo1.altura} : {triangulo1.calc_area()}")
+
+print(f"Área de uma forma {elipse1.tipo} de {elipse1.base}X{elipse1.altura} : {elipse1.calc_area()}")
 
 
 # burlando o sistema de detecção de erro
