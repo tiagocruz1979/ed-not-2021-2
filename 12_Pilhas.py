@@ -35,5 +35,5 @@ print(inverso)
 # de dados apenas na sua extremidade final, como consequência, ela segue
 # a regra LIFO ( Last in - first out - último a entrar , primeiro a sair)
 # e tem acesso limitado aos seus elementos.
-# 
+
 
