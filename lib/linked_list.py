@@ -58,17 +58,69 @@ class LinekdList:
         # 4º caso: inserção em posição intermediária
         else:
             before = self.__head 
+            #percorre a lista encadeada da segunda posição (pos.1) até a posição Anterior àquela de inserção
+            for i in range(1,pos): before = before.next
 
-            #percorre a lista encadeada até a posição anterior àquela inserção
-            for i in range(0,pos):
-                print(f"before.data: {before.data}, i:{i}")
-                before = before.next
+            # Nodo que ficará depois do inserido
+            after = before.next
 
+            # O next do nodo inserido passa a ser o after
+            inserted.next = after
+
+            # o next do nodo before passa a ser  o inserted
+            before.next = inserted
 
         self.__count += 1
 
+    """
+        Método para inserir na primeira posição
+    """
+    def insertFront(self,val):
+        self.insert(0,val)    
 
-        print(f"[NODE] data: {inserted.data} , next: {inserted.next}")
+    """
+        Método para inserir na última posição
+    """
+    def insertBack(self,val):
+        self.insert(self.__count,val)
+
+
+    """
+        retorna o data do nodo  da posição desejada
+    """
+    def peek(self,pos):
+        # Quando a lista estiver vazia ou a posiçlão estiver fora dos limites válidos (0.. count -1) , retorna None
+        if self.is_empty() or pos < 0 or pos > self.__count -1: return None
+        node = self.__head
+        for i in range(0,pos):
+            node = node.next
+        return node.data
+
+    """
+        Método para procurar um valor na lista e retornar sua posição.
+        REtorna -1 caso não encontre
+    """
+    def index(self,val):
+        node = self.__head
+        for pos in range(0,self.__count):
+            if node.data == val: return pos
+            node = node.next
+        return -1 # Não encontrou
+
+
+    """
+        Método que imprime toda a lista . para fins de depuração
+    """
+    def to_str(self):
+            string = ""
+            node = self.__head
+            for i in range(0,self.__count):
+                if string != "": string += ", "
+                string += f"(pos:: {i} data: {node.data})"
+                node = node.next
+            return "[" + string + " ]" +f"count: {self.__count}"
+
+
 
 ##################################################
 
@@ -83,8 +135,25 @@ lista.insert((5), "shampoo")
 
 lista.insert((4), "tomate")
 
+lista.insert(7, "sabão em pó")
 
+lista.insert(30,"detergente")
 
+lista.insertFront("5 kg arroz")
 
+lista.insertBack("Água Sanitária")
+
+print(lista.to_str())
+
+print(f"Info do nodo na posicao 7: {lista.peek(7)}")
+print(f"Info do nodo na posicao 13: {lista.peek(13)}")
+print(lista.peek(5))
+print(lista.peek(0))
+
+print(f"Item procurado na posição: {lista.index('5 kg arroz')}")
+print(f"Item procurado na posição: {lista.index('shampoo')}")
+print(f"Item procurado na posição: {lista.index('café')}")
+print(f"Item procurado na posição: {lista.index('Água Sanitária')}")
+print(f"Item procurado na posição: {lista.index('cebola')}")
 
 
