@@ -16,7 +16,7 @@ class Node:
         - Cada nodo da lista encadeada tem duas partes: uma , que armazena a informação e outra que guarda o endereço do próximo  nodo da sequencia
         - a qualquer momento , temos um conhecimento apenas limitados de onde se encontram todos os nodos da lista. sabemos  apenas onde está o primeiro e o ultimo nodo da sequencia. Os nodos intermediarios precisam ser encontrados partindo-se do primeiro e percorrendo a sequencia
     """
-class LinekdList:
+class LinkedList:
 
     """
         Construtor da classe
@@ -109,6 +109,63 @@ class LinekdList:
 
 
     """
+        Método para remover elemento da lista
+    """
+    def remove(self,pos):
+
+        # 1º caso: lista vazia ou posição fora dos limites
+        # (menor que 0 ou mairo que count -1) 
+        if self.__count == 0 or pos < 0 or pos > self.__count - 1:
+            return None
+        
+        #2º case: remoção inicio da lista
+        if pos == 0:
+            removed = self.__head   # Nodo removido
+            self.__head = self.__head.next   #Passa a apontar o nodo seguinte
+        
+        # 3º caso: remoçoes intermediárias ou final
+        else:
+            # Percorre a lista até encontrar o item anterior da posição a ser removida (before)
+            before = self.__head
+            for i in range(1, pos): before = before.next
+            # o Removido será o sucessor do before
+            removed = before.next
+        
+            # Nodo da posição seguinte à de remoção
+            after = removed.next
+
+            # O nodo anterior (before) passa apontar para o nodo seguinte (after)
+            before.next = after
+
+            # Atualizando o tail caso a remoção seja o último nodo
+            if removed == self.__tail:
+                self.tail = before
+
+        self.__count -= 1
+        # Retorna o valor armazenado no nodo removido
+        return removed.data     
+        
+    
+    """
+        Método de atalho para remoção do primeiro item da lista
+    """
+    def removeHead(self):
+        return self.remove(0)
+    
+    """
+        Método de atalho para remoão do último item da lista
+    """
+    def removeTail(self):
+        return self.remove(self.__count-1)
+    
+    """
+        Método que retorna a quantidade de itens da lista
+    """
+    def count(self):
+        return self.__count
+    
+    
+    """
         Método que imprime toda a lista . para fins de depuração
     """
     def to_str(self):
@@ -122,38 +179,5 @@ class LinekdList:
 
 
 
-##################################################
-
-lista = LinekdList()
-
-lista.insert((0), "1 kg de batata")
-lista.insert((1), "café")
-lista.insert((2), "miojo")
-lista.insert((3), "óleo")
-lista.insert((4), "sabonete")
-lista.insert((5), "shampoo")
-
-lista.insert((4), "tomate")
-
-lista.insert(7, "sabão em pó")
-
-lista.insert(30,"detergente")
-
-lista.insertFront("5 kg arroz")
-
-lista.insertBack("Água Sanitária")
-
-print(lista.to_str())
-
-print(f"Info do nodo na posicao 7: {lista.peek(7)}")
-print(f"Info do nodo na posicao 13: {lista.peek(13)}")
-print(lista.peek(5))
-print(lista.peek(0))
-
-print(f"Item procurado na posição: {lista.index('5 kg arroz')}")
-print(f"Item procurado na posição: {lista.index('shampoo')}")
-print(f"Item procurado na posição: {lista.index('café')}")
-print(f"Item procurado na posição: {lista.index('Água Sanitária')}")
-print(f"Item procurado na posição: {lista.index('cebola')}")
 
 
