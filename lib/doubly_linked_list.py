@@ -69,15 +69,13 @@ class DoublyLinkedList:
         node2 = self.__tail
         
          # Contador que vai até a metade da lista
-        for pos in range(0,meio +1):
+        for pos in range(0,meio):
             if(node1.data == val): return pos   # Retorna a posição encontrada
             if(node2.data == val): return self.__count - 1 - pos # Retorna a posição retroativa
-            node1 = node1.next #node1 anda para frente
+            node1 = node1.next # node1 anda para frente
             node2 = node2.prev # node2 anda para trás
         
         return -1   # Não encontrou o valor na lista
-
-
 
     """
         Método para inserção de novo nodo na lista
@@ -218,73 +216,3 @@ class DoublyLinkedList:
 
 
 ##################################################
-
-lista = DoublyLinkedList()
-print(lista.to_str())
-
-# inserção na lista vaziz
-lista.insert(0,'Fusca')
-print(lista.to_str())
-
-# inserção no início da lista
-lista.insert(0,'Chevette')
-print(lista.to_str())
-
-# inserção no final da lista
-lista.insert(3,'Maverick')
-print(lista.to_str())
-
-# inserção no final da lista
-lista.insert(4,'Opala')
-print(lista.to_str())
-
-# inserção no final da lista
-lista.insert(5,'Del Rey')
-print(lista.to_str())
-
-
-# inserção em posição intermediária
-lista.insert(1,'Gol')
-print(lista.to_str())
-
-# inserção em posição intermediária
-lista.insert(4,'Corcel')
-print(lista.to_str())
-
-#remoção do primeiro nodo
-removido = lista.remove(0)
-print(f"Removido da primeira posição: {removido}" )
-print(lista.to_str())
-
-#remoção do último nodo
-removido = lista.remove(lista.count() -1)
-print(f"Removido última posição: {removido}")
-print(lista.to_str())
-
-#remoção de posição intermediária
-removido = lista.remove(2)
-print(f"Remoção da posição 2: {removido}")
-print(lista.to_str())
-
-#Consultando o ultimo elemento da lista
-consulta = lista.peek_tail()
-print(f"Mostrar o último elemento: {consulta}")
-print(lista.to_str())
-
-# mostrar a posiçãogit add .
-#  de um determinado valor
-
-valor = "Opala"
-print(f"Mostra a posição de {valor} , posicao {lista.index(valor)}")
-
-valor = "Gol"
-print(f"Mostra a posição de {valor} , posicao {lista.index(valor)}")
-
-valor = "Fusca"
-print(f"Mostra a posição de {valor} , posicao {lista.index(valor)}")
-
-valor = "Corcel"
-print(f"Mostra a posição de {valor} , posicao {lista.index(valor)}")
-
-valor = "Maverick"
-print(f"Mostra a posição de {valor} , posicao {lista.index(valor)}")
