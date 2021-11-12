@@ -42,27 +42,110 @@ class BinarySearchTree:
         #   2º caso: inserção recursiva -> percorrer a árvore recursivamente
         else: self.__insert_node(inserted, self.__root)
 
-        # Exibe a árvore (para debug)
-        print(f'[ÁRVORE] data: {self.__root.data}, left: {self.root.left}, right: {self.__root.right}')
-
     """
         Método __privado de inserção de um nodo na árvore
     """
-    def __insert_node(self,node, root):
+    def __insert_node(self, inserted , root):
         # 1º caso: valor do nodo é MENOR que o valor da raiz -> vai para a esquerda
-        if node.data < root.data:
+        if inserted.data < root.data:
             # Se o do da esquerda estiver desocupado, faz aí a inserção
-            if root.left is None: root.left = node
+            if root.left is None: root.left = inserted
+            #Senão , passa a considerar o nodo da esquerda como raiz
+            else: self.__insert_node(inserted, root.left)
+
         # 2º caso: valor do nodo é MAIOR que o valor da raiz -> vai para a direita
-        elif node.data>root.data:
+        elif inserted.data>root.data:
             # se o nodo da direita estiver desocupado, faz aí a inserção
-            if root.right is None: root.right = node
+            if root.right is None: root.right = inserted
+            # senão passa a considerar o nodo da direita como raiz
+            else: self.__insert_node(inserted, root.right)
+
+        # Observação: quando inserted. data == root.data (tentativa de inserção de um valor que já existe na árvore), nada acontece. A tentativa é ignorada
 
 
+    """
+        Método que exibe a árvore recursivamente
+    """
+    def to_str(self, root = None):
+        output = ''
+        
+        if root is None: root = self.__root
+        
+        if root is not None: 
+            output += f'[ROOT] data:  {root.data}\n' #\n = Quebra de linha (enter)
+
+            if root.left is not None:
+                output += f'(À esquerda de {root.data}) ' + self.to_str(root.left) 
+            
+            if root.right is not None:
+                output += f'(À direita de {root.data}) ' + self.to_str(root.right)
+        return output
+
+    """
+        Percursos
+    """
+    """
+        Método que faz o percurso em ordem (in-order traversal)
+        1º: visita em ordem a subárvore esquerda
+        2º: visita a raiz
+        3º: visita em ordem a subárvre direita
+        Este percurso é utilizado quando se deseja recuperar os elementos da árvore em ordem 
+    """
+    def in_order_traversal(self, fnCallback , root = False):
+
+        if root is False: root = self.__root
+        if root is not None:
+            self.in_order_traversal(fnCallback, root.left) # 1º etapa
+            fnCallback(root.data) # 2º
+            self.in_order_traversal(fnCallback,root.right) # 3º
+
+    """
+        Método que faz o percurso pré ordem (pre-order traversal)
+        1º: visita a raiz
+        2º: visita pre-ordem a subarvore esquerda
+        3º: visita pre-ordem a subárvore direita
+        Este percurso é utilizado quando se deseja copiar a árvore preservando a sua estrutura
+    """
+    def pre_order_traversal(self, fnCallback , root = False):
+
+        if root is False: root = self.__root
+        if root is not None:
+            fnCallback(root.data) # 1º
+            self.pre_order_traversal(fnCallback, root.left) # 2º
+            self.pre_order_traversal(fnCallback,root.right) # 3º
+           
 ######################################################
 
 arvore = BinarySearchTree()
-arvore.insert(43) 
-arvore.insert(27) 
-arvore.insert(64) 
+
+lista=[43,27,64,36,10,0]
+for i in range(len(lista)):
+    arvore.insert(lista[i])
+
+print(arvore.to_str())
+
+em_ordem = []
+
+def insere_em_ordem(val):
+    em_ordem.append(val)
+
+arvore.in_order_traversal(insere_em_ordem)
+
+print('Percurso em ordem:', em_ordem)
+
+
+sumario = BinarySearchTree()
+lista2=['2','1','3','1.1','3.1','2.1','2.1.1']
+for i in range(len(lista2)):
+    sumario.insert(lista2[i])
+
+em_ordem=[]
+sumario.in_order_traversal(lambda val: em_ordem.append(val))
+
+print(em_ordem)
+
+pre_ordem=[]
+sumario.pre_order_traversal(lambda val: pre_ordem.append(val))
+
+print(pre_ordem)
 
