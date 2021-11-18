@@ -113,7 +113,129 @@ class BinarySearchTree:
             fnCallback(root.data) # 1º
             self.pre_order_traversal(fnCallback, root.left) # 2º
             self.pre_order_traversal(fnCallback,root.right) # 3º
-           
+
+    
+    """
+        Método que faz o percurso pós ordem (post-order traversal)
+        1º: visita pos-ordem a subarvore esquerda
+        2º: visita pos-ordem a subárvore direita
+        2º: visita a raiz
+        Este percurso é utilizado para sumarizações "botton-up" (de baixo para cima , na folhas em direção Pa rauz) e tambpem pode ser usado no processo de remoção de um nodo da árovre
+    """  
+    def post_order_traversal(self, fnCallback, root = False):
+
+        if root is False: root = self.__root
+
+        if root is not None:
+            self.post_order_traversal(fnCallback, root.left) # º1
+            self.post_order_traversal(fnCallback, root.right) # 2º
+            fnCallback(root.data)   # 3º
+
+    """
+        Método PRIVADO que busca recursivamente por um valor na árvore
+        retorna:
+            - O nodo que contem o valor , caso este exista
+            - None , se não for encontrado
+    """
+    def __search_node(self, root, key):
+        
+        # 1º caso: árvore vazia
+        if root is None: return None
+        
+        # 2º caso: o valor de key é menor que o valor da raiz
+        # continua a busca recursivamente pela subarvore esquerda
+        if key < root.data: return self.__search_node(root.left, key)
+        
+        # 3º caso: o valor de key é maior que o valor da raiz
+        # continua a busca recursivamente pela subarvore direita
+        if key >  root.data: return self.__search_node(root.right,key)
+
+        # 4º caso: o valor de key é igual ao valor da raiz
+        # encontrou o valor: retorna o nodo root
+        return root
+    
+    """
+        Método Publico que retorna se um valor existe na árvore (true)
+        ou não (False)
+    """
+    def exists(self,val):
+        node = self.__search_node(self.__root, val)
+        if node is None: return False
+        else: return True
+
+
+    """
+        Método privado para encontrar o nodo de menor valor a partir da raiz fornecida
+    """
+    def __min_node(self, root):
+        node = root
+        while node is not None and node.left is not None:
+            node = node.left
+        return node
+
+    """
+        Método Privado para encontrar o nodo de maior valor a partir da raiz fornecida
+    """
+    def __max_node(self, root):
+        node = root
+        while node is not None and node.right is not None:
+            node = node.right
+        return node
+
+
+    """
+        Método público para remoção de um valor da árvore
+    """
+    def remove(self,val):
+        self.__root = self.__remove_node(self.__root,val)
+
+    """
+        Método privado para remoção de um nodo da árvore
+    """
+    def __remove_node(self, root):
+
+        # 1º caso: Árvore Vazia
+        if root is None: return None
+
+        # 2º caso: o valor a ser removido é menor do que o valor da raiz
+        # continua procurando  pelo nodo a ser removido pelo lado esquerdo
+        if val < root.data:
+            root.left = self.__remove_node(root.left, val)
+            return root
+
+        # 3º caso: o valor a ser removido é mairo do que o valor da raiz
+        # continua procurando pelo nodo a ser removido pela lado direito
+        if val > root.data:
+            root.left = self.__remove_node(root.right, val)
+            return root
+
+        # 4º caso: o valor a ser removido é igual ao valor da raiz
+        # o nodo a ser removido encontrado: agora é necessário determinar
+        # o grau do nodo para aplicar o algoritmo de remoção correto
+
+        # 4.1: remoção de nodo de grau 0
+        if root.left is None and root.right is None:
+            root = None
+            return root
+
+        # 4.2: remoção de nodo de grau 1 com subarvore a esquerda
+        if root.left is not None and root.right is None:
+            root = root.left
+            return root
+        
+        # 4.3 remoção de nodo de grau 1 com subarcore a direita
+        if root.left is None and root.right is not None:
+            root = root.right
+            return root
+        
+        # 4.4 remoção do nodo de grau 2
+
+        
+        
+        
+
+
+        
 ######################################################
 
 arvore = BinarySearchTree()
@@ -121,6 +243,7 @@ arvore = BinarySearchTree()
 lista=[43,27,64,36,10,0]
 for i in range(len(lista)):
     arvore.insert(lista[i])
+
 
 print(arvore.to_str())
 
@@ -148,4 +271,13 @@ pre_ordem=[]
 sumario.pre_order_traversal(lambda val: pre_ordem.append(val))
 
 print(pre_ordem)
+
+pos_ordem=[]
+arvore.post_order_traversal(lambda val: pos_ordem.append(val))
+print('Árvore pós-ordem:', pos_ordem)
+
+existe36 = arvore.exists(36)
+existe51 = arvore.exists(51)
+existe64 = arvore.exists(64)
+print(f'36: {existe36}, 51: {existe51}, 64: {existe64}')
 
