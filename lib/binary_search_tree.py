@@ -192,7 +192,7 @@ class BinarySearchTree:
     """
         Método privado para remoção de um nodo da árvore
     """
-    def __remove_node(self, root):
+    def __remove_node(self, root,val):
 
         # 1º caso: Árvore Vazia
         if root is None: return None
@@ -206,7 +206,7 @@ class BinarySearchTree:
         # 3º caso: o valor a ser removido é mairo do que o valor da raiz
         # continua procurando pelo nodo a ser removido pela lado direito
         if val > root.data:
-            root.left = self.__remove_node(root.right, val)
+            root.right = self.__remove_node(root.right, val)
             return root
 
         # 4º caso: o valor a ser removido é igual ao valor da raiz
@@ -230,54 +230,30 @@ class BinarySearchTree:
         
         # 4.4 remoção do nodo de grau 2
 
-        
+        # precisamos encontrar:
+        # a) O maior nodo da subarvore esquerda; ou 
+        # b) o menor nodo da subárvore direita
+
+        # Nossa opção: usar o maior nodo da subarvore esquerda
+        new_root = self.__max_node(root.left)
+        # ou new_root = self.__min_node(root.right)
+
+        # copia o valor do nodo encontrado para o nodo que está
+        # sendo "removido"
+        root.data = new_root.data
+
+        # exclui o valor duplicado que está na subarvore esquerda
+        # ( de onde veio o valor de new_root)
+        root.left = self.__remove_node(root.left, new_root.data)
+        # ou: root.right = self.__remove_node(root.right, new_root.data)
+
+        return root
+
+   
         
         
 
 
         
 ######################################################
-
-arvore = BinarySearchTree()
-
-lista=[43,27,64,36,10,0]
-for i in range(len(lista)):
-    arvore.insert(lista[i])
-
-
-print(arvore.to_str())
-
-em_ordem = []
-
-def insere_em_ordem(val):
-    em_ordem.append(val)
-
-arvore.in_order_traversal(insere_em_ordem)
-
-print('Percurso em ordem:', em_ordem)
-
-
-sumario = BinarySearchTree()
-lista2=['2','1','3','1.1','3.1','2.1','2.1.1']
-for i in range(len(lista2)):
-    sumario.insert(lista2[i])
-
-em_ordem=[]
-sumario.in_order_traversal(lambda val: em_ordem.append(val))
-
-print(em_ordem)
-
-pre_ordem=[]
-sumario.pre_order_traversal(lambda val: pre_ordem.append(val))
-
-print(pre_ordem)
-
-pos_ordem=[]
-arvore.post_order_traversal(lambda val: pos_ordem.append(val))
-print('Árvore pós-ordem:', pos_ordem)
-
-existe36 = arvore.exists(36)
-existe51 = arvore.exists(51)
-existe64 = arvore.exists(64)
-print(f'36: {existe36}, 51: {existe51}, 64: {existe64}')
 
